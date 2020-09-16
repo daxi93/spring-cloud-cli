@@ -1,0 +1,30 @@
+server:
+  port: 8000
+
+spring:
+  profiles:
+    active: dev
+
+  application:
+    name: tg-gateway
+
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowCredentials: true
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            maxAge: 30
+            allowedMethods:
+              - GET
+              - POST
+              - OPTIONS
+      routes:
+        - id: admin-module
+          uri: lb://admin-server
+          predicates:
+            - Path=/admin/**
+          filters:
+            - StripPrefix=1
